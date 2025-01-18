@@ -1,16 +1,35 @@
-## Hi there 👋
+npm i thirdweb
+import {
+  createThirdwebClient,
+  getContract,
+} from "thirdweb";
+import { defineChain } from "thirdweb/chains";
 
-<!--
-**deryan17/deryan17** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+// create the client with your clientId, or secretKey if in a server environment
+const client = createThirdwebClient({
+  clientId: "YOUR_CLIENT_ID",
+});
 
-Here are some ideas to get you started:
+// connect to your contract
+const contract = getContract({
+  client,
+  chain: defineChain(93384),
+  address: "0xd4B8F7ea1BeCd05e9b2A6C7A5c810dc8b39bFee6",
+});
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+import {
+  prepareContractCall,
+  sendTransaction,
+} from "thirdweb";
+
+const transaction = await prepareContractCall({
+  contract,
+  method:
+    "function approve(address spender, uint256 amount) returns (bool)",
+  params: [spender, amount],
+});
+const { transactionHash } = await sendTransaction({
+  transaction,
+  account,
+});
+
